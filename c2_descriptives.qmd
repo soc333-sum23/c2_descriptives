@@ -1,0 +1,85 @@
+---
+title: "Project description"
+callout-icon: false
+editor: visual
+---
+
+# Descriptive Statistics {#descriptives}
+
+Please put your work for component 2, descriptive statistics, in this document.
+
+```{r setup}
+library(tidyverse)
+library(openintro)
+```
+
+### Part 1: Understanding your variables
+
+-   Write down your research question (from component 1)
+
+-   Write down your hypothesis (from component 1)
+
+-   Write down the name of your data set (from component 1)
+
+-   Write down the names of the variables you will use in your analysis (i.e., what you need to type to access them in R)
+
+-   For each variable, write:
+
+    -   A brief description of what it measures
+
+    -   Whether it is an explanatory (independent) variable, a response (dependent) variable, or something else (explain what)
+
+    -   What kind of variable it is (categorical or numeric and which subtype within these)
+
+
+### Part 2: Univariate distributions
+
+-   For each of your variables:
+
+    -   Look at its distribution using the summary() or table() function (as appropriate to its type). 
+    -   Indicate how many missing values (NAs) there are.
+    -   In ~2-3 sentences, describe what you see in the results. Note anything that surprises you.
+
+```{r}
+# replace the contents of this code chunk with tables/summaries of your variables (you can copy and paste the chunk to display different variables separately)
+summary(lizard_run$top_speed)
+table(lizard_run$common_name, useNA = "always")
+```
+
+
+### Part 3: Preparing your data set
+
+-   Will you analyze all the observations in your data set? Explain why or why not. If not, which will you include and which will you exclude?
+
+-   Do you need to create any new variables? Explain why or why not. If so, what are they?
+
+-   If necessary, use the code chunk below to make any needed changes (filtering observations and creating variables) to your data. Check whether they worked as expected.
+
+```{r}
+lizardhabitats_filtered <- filter(lizard_habitat, site == "desert")
+
+lizardhabitats_newvars <- mutate(lizardhabitats_filtered, anysun = sunlight != "shade")
+
+table(lizardhabitats_newvars$site, useNA = "always")
+table(lizardhabitats_newvars$sunlight, lizardhabitats_newvars$anysun)
+```
+
+### Part 4: Multivariate visualizations
+
+-   Make a plot showing the relationship between your explanatory (independent) and response (dependent) variables.
+    Depending on your variable types, this might be a scatter plot, box plot, bar chart, etc.
+    Include meaningful axis labels.
+
+-   Interpret your plot in a few sentences.
+    Does it appear these variables are associated with one another?
+    Does anything about the relationship surprise you?
+    Is it consistent or inconsistent with your hypothesis?
+
+```{r}
+# replace the contents of this chunk with code to create your plot
+ggplot(lizard_run, aes(x = top_speed, y = common_name)) + 
+  geom_boxplot() + 
+  labs(x = "Top running speed (meters per second)", 
+       y = "Species",
+       title = "Top speeds of two species of cool lizards")
+```
